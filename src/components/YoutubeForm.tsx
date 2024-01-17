@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 
 const FIELD_NAMES = {
   username: "username",
@@ -10,7 +11,7 @@ const YoutubeForm = () => {
   const form = useForm();
 
   // register a field
-  const { register } = form;
+  const { register, control } = form;
 
   return (
     <div>
@@ -38,6 +39,8 @@ const YoutubeForm = () => {
 
         <button>Submit</button>
       </form>
+
+      <DevTool control={control} />
     </div>
   );
 };
