@@ -10,6 +10,8 @@ const form = useForm();
 
 Để register 1 field với react hook form, sử dụng function `register` trong object `form`:
 
+Function `register` nhận vào tham số đầu tiên là tên của input field tương ứng.
+
 ```
 const { register } = form;
 const dataRegister = register("<field-name>")
@@ -80,4 +82,69 @@ const onSubmit = (data: FormValues) => {...}
 <form onSubmit={handleSubmit(onSubmit)}>
   ...
 </form>
+```
+
+#### Validation
+
+`react-hook-form` hỗ trợ một số kiểu validate cho form như: `require`, `minLength`, `maxLength`, `min`, `max`, `pattern`....
+
+Disable chức năng validation mặc định của browser, thêm props `noValidate` vào thẻ `form`.
+
+Để thêm validation cho 1 input field, truyền vào function `register` tương ứng của field đó tham số thứ 2. Tham số này là một options object với một số cặp key-value như sau:
+
+1. `required`: value là message lỗi khi không nhập data
+
+```
+register("username", {
+  required: "Username is required"
+})
+```
+
+`value` cũng có thể khai báo dưới dạng object:
+
+```
+register('username', {
+  required: {
+    value: true,
+    message: "Username is required"
+  }
+})
+```
+
+Thông tin `error` và `message` tương ứng có thể theo dõi trong `Devtool`
+
+2. `pattern`: value là object gồm có:
+
+- value: là một regex
+- message: là message lỗi khi giá trị nhập vào không thoả pattern
+
+```
+register('username', {
+  required: {
+    value: true,
+    message: "Username is required"
+  },
+  pattern: {
+    value:
+      /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+    message: "Invalid email format",
+  },
+})
+```
+
+###### Hiển thị thông tin errors
+
+Thông tin của `errors` được `react-hook-form` đăt bên trong `object form`. Cụ thể là `form.formState.errors`
+
+```
+const { formState } = form;
+const { errors } = formState;
+```
+
+`errors` là object, với mỗi key tương ứng với tên của một field, value là tất cả thông tin validation của field đó.
+
+Để hiển thị message-error, `errors['field-name']?.message`:
+
+```
+<p>{errors.username?.message}</p>
 ```

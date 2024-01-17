@@ -27,32 +27,56 @@ const YoutubeForm = () => {
   countRender++;
 
   // register a field
-  const { register, control, handleSubmit } = form;
+  const { register, control, handleSubmit, formState } = form;
+
+  // console.log({ formState });
+  const { errors } = formState;
+  // console.log({ errors });
 
   return (
     <div>
       <h3>Number of render ({countRender / 2})</h3>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <label htmlFor={FIELD_NAMES.username}>Username</label>
-        <input
-          type="text"
-          id={FIELD_NAMES.username}
-          {...register(FIELD_NAMES.username)}
-        />
+      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+        <div className="form-control">
+          <label htmlFor={FIELD_NAMES.username}>Username</label>
+          <input
+            type="text"
+            id={FIELD_NAMES.username}
+            {...register(FIELD_NAMES.username, {
+              required: "Username is required",
+            })}
+          />
+          <p className="error">{errors.username?.message}</p>
+        </div>
 
-        <label htmlFor={FIELD_NAMES.email}>Email</label>
-        <input
-          type="email"
-          id={FIELD_NAMES.email}
-          {...register(FIELD_NAMES.email)}
-        />
+        <div className="form-control">
+          <label htmlFor={FIELD_NAMES.email}>Email</label>
+          <input
+            type="email"
+            id={FIELD_NAMES.email}
+            {...register(FIELD_NAMES.email, {
+              required: "Email is required",
+              pattern: {
+                value:
+                  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
+                message: "Invalid email format",
+              },
+            })}
+          />
+          <p className="error">{errors.email?.message}</p>
+        </div>
 
-        <label htmlFor={FIELD_NAMES.channel}>Channel</label>
-        <input
-          type="text"
-          id={FIELD_NAMES.channel}
-          {...register(FIELD_NAMES.channel)}
-        />
+        <div className="form-control">
+          <label htmlFor={FIELD_NAMES.channel}>Channel</label>
+          <input
+            type="text"
+            id={FIELD_NAMES.channel}
+            {...register(FIELD_NAMES.channel, {
+              required: "Channel is required",
+            })}
+          />
+          <p className="error">{errors.channel?.message}</p>
+        </div>
 
         <button>Submit</button>
       </form>
