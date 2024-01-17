@@ -61,6 +61,19 @@ const YoutubeForm = () => {
                   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
                 message: "Invalid email format",
               },
+              validate: {
+                notAdmin: (fieldValue) => {
+                  return (
+                    fieldValue !== "admin@example.com" || "Enter another email"
+                  );
+                },
+                notBlackList: (fieldValue) => {
+                  return (
+                    !fieldValue.endsWith("baddomain.com") ||
+                    "This domain is not support"
+                  );
+                },
+              },
             })}
           />
           <p className="error">{errors.email?.message}</p>

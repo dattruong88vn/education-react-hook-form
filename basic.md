@@ -92,7 +92,7 @@ Disable chức năng validation mặc định của browser, thêm props `noVali
 
 Để thêm validation cho 1 input field, truyền vào function `register` tương ứng của field đó tham số thứ 2. Tham số này là một options object với một số cặp key-value như sau:
 
-1. `required`: value là message lỗi khi không nhập data
+1. `required` attribute: value là message lỗi khi không nhập data
 
 ```
 register("username", {
@@ -113,7 +113,7 @@ register('username', {
 
 Thông tin `error` và `message` tương ứng có thể theo dõi trong `Devtool`
 
-2. `pattern`: value là object gồm có:
+2. `pattern` attribute: value là object gồm có:
 
 - value: là một regex
 - message: là message lỗi khi giá trị nhập vào không thoả pattern
@@ -147,4 +147,37 @@ const { errors } = formState;
 
 ```
 <p>{errors.username?.message}</p>
+```
+
+3. `validate` attribute: dùng để custom validation
+
+Giá trị của `validate` attribute là một function: trường hợp chỉ có một logic để custom.
+
+- Tham số là fieldValue
+- Giá trị trả về: `true` cho trường hợp pass validate hoặc string message cho trường hợp failed và hiển thị message lỗi.
+
+```
+  validate: (fieldValue) => {
+    return (
+      fieldValue !== "admin@example.com" || "Enter another email"
+    );
+  },
+```
+
+Giá trị `validate` attribute còn có thể là một object, mỗi key trong object là một function như cách trên.
+
+```
+  validate: {
+    notAdmin: (fieldValue) => {
+      return (
+        fieldValue !== "admin@example.com" || "Enter another email"
+      );
+    },
+    notBlackList: (fieldValue) => {
+      return (
+        !fieldValue.endsWith("baddomain.com") ||
+        "This domain is not support"
+      );
+    },
+  },
 ```
