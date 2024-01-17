@@ -46,3 +46,38 @@ Thông thường nếu ko sử dụng third-party library, muốn control form t
 - Sử dụng `ref`: khắc phục được vấn đề re-render tuy nhiên lại khá dài dòng, khi có nhiều form thì sẽ khó đọc code và maintain.
 
 Rõ ràng, `react-hook-form` đã xử lý được cả 2 yếu tố trên.
+
+#### Submit form
+
+Để submit form, thực hiện các bước sau:
+
+- Tạo function sẽ được thực thi khi nhấn button submit: ví dụ `onSubmit`.
+- Từ `object form`, destructure thêm function `handleSubmit`. Function này nhận vào 1 tham số, chính là function sẽ được thực thi khi nhấn submit
+- Function `onSubmit` sẽ nhận được 1 đối số chính là object chứa data của form.
+
+```
+const { handleSubmit } = form;
+const onSubmit = (data) => {}
+
+<form onSubmit={handleSubmit(onSubmit)}>
+...
+</form>
+```
+
+#### Typescript
+
+Đối với `typescript` ta cần khai báo kiểu dữ liệu của form, với các field tương ứng.
+Khai báo kiểu dữ liệu này vào `useForm` hook để `react-hook-form` nhận diện.
+Lúc này, trong function `onSubmit`, kiểu dữ liệu của form cũng cần được khai báo.
+
+```
+type FormValues = {...}
+
+const form = useForm<FormValues>();
+
+const onSubmit = (data: FormValues) => {...}
+
+<form onSubmit={handleSubmit(onSubmit)}>
+  ...
+</form>
+```

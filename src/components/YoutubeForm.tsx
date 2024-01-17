@@ -1,21 +1,38 @@
 import { useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
-const FIELD_NAMES = {
+let countRender = 0;
+
+type FormValues = {
+  username: string;
+  email: string;
+  channel: string;
+};
+
+type FormKeys = { [Key: string]: "username" | "email" | "channel" };
+
+const FIELD_NAMES: FormKeys = {
   username: "username",
   email: "email",
   channel: "channel",
 };
 
 const YoutubeForm = () => {
-  const form = useForm();
+  const form = useForm<FormValues>();
+
+  const onSubmit = (data: FormValues) => {
+    console.log(`submit form:`, { data });
+  };
+
+  countRender++;
 
   // register a field
-  const { register, control } = form;
+  const { register, control, handleSubmit } = form;
 
   return (
     <div>
-      <form>
+      <h3>Number of render ({countRender / 2})</h3>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor={FIELD_NAMES.username}>Username</label>
         <input
           type="text"
@@ -32,7 +49,7 @@ const YoutubeForm = () => {
 
         <label htmlFor={FIELD_NAMES.channel}>Channel</label>
         <input
-          type="email"
+          type="text"
           id={FIELD_NAMES.channel}
           {...register(FIELD_NAMES.channel)}
         />
