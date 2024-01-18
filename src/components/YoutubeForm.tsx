@@ -7,14 +7,20 @@ type FormValues = {
   username: string;
   email: string;
   channel: string;
+  social: {
+    twitter: string;
+    facebook: string;
+  };
 };
 
-type FormKeys = { [Key: string]: "username" | "email" | "channel" };
-
-const FIELD_NAMES: FormKeys = {
+const FIELD_NAMES = {
   username: "username",
   email: "email",
   channel: "channel",
+  social: {
+    twitter: "",
+    facebook: "",
+  },
 };
 
 const YoutubeForm = () => {
@@ -57,11 +63,11 @@ const YoutubeForm = () => {
       <h3>Number of render ({countRender / 2})</h3>
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="form-control">
-          <label htmlFor={FIELD_NAMES.username}>Username</label>
+          <label htmlFor={"username"}>Username</label>
           <input
             type="text"
-            id={FIELD_NAMES.username}
-            {...register(FIELD_NAMES.username, {
+            id={"username"}
+            {...register("username", {
               required: "Username is required",
             })}
           />
@@ -69,11 +75,11 @@ const YoutubeForm = () => {
         </div>
 
         <div className="form-control">
-          <label htmlFor={FIELD_NAMES.email}>Email</label>
+          <label htmlFor={"email"}>Email</label>
           <input
             type="email"
-            id={FIELD_NAMES.email}
-            {...register(FIELD_NAMES.email, {
+            id={"email"}
+            {...register("email", {
               required: "Email is required",
               pattern: {
                 value:
@@ -99,15 +105,25 @@ const YoutubeForm = () => {
         </div>
 
         <div className="form-control">
-          <label htmlFor={FIELD_NAMES.channel}>Channel</label>
+          <label htmlFor={"channel"}>Channel</label>
           <input
             type="text"
-            id={FIELD_NAMES.channel}
-            {...register(FIELD_NAMES.channel, {
+            id={"channel"}
+            {...register("channel", {
               required: "Channel is required",
             })}
           />
           <p className="error">{errors.channel?.message}</p>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor={"twitter"}>Twitter</label>
+          <input type="text" id={"twitter"} {...register("social.twitter")} />
+        </div>
+
+        <div className="form-control">
+          <label htmlFor={"facebook"}>Facebook</label>
+          <input type="text" id={"facebook"} {...register("social.facebook")} />
         </div>
 
         <button>Submit</button>

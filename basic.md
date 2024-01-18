@@ -216,3 +216,31 @@ const form = useForm<FormTypes>({
   }
 })
 ```
+
+#### Nested Object
+
+Một số trường hợp sau khi submit form, một số data cần phải gom nhóm thành những object để gửi lên server cho đúng format.
+
+`react-hook-form` cũng hỗ trợ luôn tính năng này, developer ko cần phải gom nhóm data thành những nested object bên trong function `onSubmit`.
+
+Cách thực hiện:
+
+- Định nghĩa type cho các field cần group tương tự như các field khác
+- Thêm default value cho các values này (nếu cần thiết).
+- Tạo các element tương ứng để user có thể nhập liệu data, lưu ý tên của các field này cần phải đặt đúng format nested object với dấu `.` ngăn cách.
+
+```
+const form = useForm({
+  defaultValues: {
+    social: {
+      twitter: "",
+      facebook: ""
+    }
+  }
+})
+
+...
+
+<input type="text" {...register("social.twitter")} />
+<input type="text" {...register("social.facebook")} />
+```
