@@ -181,3 +181,38 @@ Giá trị `validate` attribute còn có thể là một object, mỗi key trong
     },
   },
 ```
+
+#### Default Value
+
+Để tạo `default value` cho `reactr-hook-form`, thêm 1 tham số vào hook `useForm`. Tham số này là 1 object có chứa key `defaultValues`.
+
+Giá trị của key `defaultValues`:
+
+- Là một object, mỗi key trong object này tương ứng với `name` của các field trong form, value là giá trị mặc định muốn set.
+
+```
+const form = useForm<FormTypes>({
+  defaultValues: {
+    username: "",
+    email: "",
+    channel: ""
+  }
+})
+```
+
+- Là một function cho trường hợp sử dụng data từ API để làm giá trị mặc định. Function này bắt buộc return về object chứa các giá trị mặc định như trường hợp trên.
+
+```
+const form = useForm<FormTypes>({
+  defaultValues: async () => {
+    const response = await fetch("url-api.com");
+    const data = await response.json();
+
+    return {
+      username: data.username,
+      email: data,email,
+      channel: data.channel
+    }
+  }
+})
+```

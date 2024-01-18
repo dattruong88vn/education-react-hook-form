@@ -18,7 +18,26 @@ const FIELD_NAMES: FormKeys = {
 };
 
 const YoutubeForm = () => {
-  const form = useForm<FormValues>();
+  const form = useForm<FormValues>({
+    // object
+    // defaultValues: {
+    //   username: "",
+    //   email: "",
+    //   channel: ""
+    // }
+    // function
+    defaultValues: async () => {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users/7"
+      );
+      const data = await response.json();
+      return {
+        username: "datnhang",
+        email: data.email,
+        channel: "",
+      };
+    },
+  });
 
   const onSubmit = (data: FormValues) => {
     console.log(`submit form:`, { data });
