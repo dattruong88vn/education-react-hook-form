@@ -334,3 +334,12 @@ const { fields, append, remove } = useuseFieldArray({
   <button type="button" onClick={() => append({number: ""})}>Add phone number</button>
 </div>
 ```
+
+#### Number Field and Date Field
+
+Mặc định `react-hook-form` sẽ lưu các giá trị `number` hoặc `Date` ở dạng `string`. Để nó vẫn lưu đúng giá trị number, chúng ta thêm 1 option vào function register của field đó `valueAsNumber: true` hoặc `valueAsDate: true`.
+
+```
+<input type="number" {register('age', { required: {...}, valueAsNumber: true })}/>
+<input type="date" {register('dob', { required: {...}, valueAsDate: true })}/>
+```

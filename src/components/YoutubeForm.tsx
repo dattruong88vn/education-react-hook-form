@@ -13,6 +13,8 @@ type FormValues = {
   };
   phoneNumbers: string[];
   phNumbers: { number: string }[];
+  age: number;
+  dob: Date;
 };
 
 const YoutubeForm = () => {
@@ -28,6 +30,8 @@ const YoutubeForm = () => {
       },
       phoneNumbers: ["", ""],
       phNumbers: [{ number: "" }],
+      age: 0,
+      dob: new Date(),
     },
     // function
     // defaultValues: async () => {
@@ -54,7 +58,7 @@ const YoutubeForm = () => {
 
   // console.log({ formState });
   const { errors } = formState;
-  console.log({ errors });
+  // console.log({ errors });
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -191,6 +195,32 @@ const YoutubeForm = () => {
           <button type="button" onClick={() => append({ number: "" })}>
             Add phone number
           </button>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor={"age"}>Age</label>
+          <input
+            type="number"
+            id={"age"}
+            {...register("age", {
+              valueAsNumber: true,
+              required: "Age is required",
+            })}
+          />
+          <p className="error">{errors.age?.message}</p>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor={"dob"}>Date of Birth</label>
+          <input
+            type="date"
+            id={"dob"}
+            {...register("dob", {
+              valueAsDate: true,
+              required: "Date of Birth is required",
+            })}
+          />
+          <p className="error">{errors.dob?.message}</p>
         </div>
 
         <button>Submit</button>
