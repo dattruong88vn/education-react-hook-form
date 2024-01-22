@@ -227,7 +227,7 @@ Cách thực hiện:
 
 - Định nghĩa type cho các field cần group tương tự như các field khác
 - Thêm default value cho các values này (nếu cần thiết).
-- Tạo các element tương ứng để user có thể nhập liệu data, lưu ý tên của các field này cần phải đặt đúng format nested object với dấu `.` ngăn cách.
+- Tạo các element tương ứng để user có thể nhập liệu data, lưu ý tên của các field này cần phải đặt đúng format nested object: `<parent-key>.<child-key>`.
 
 ```
 const form = useForm({
@@ -243,4 +243,94 @@ const form = useForm({
 
 <input type="text" {...register("social.twitter")} />
 <input type="text" {...register("social.facebook")} />
+```
+
+#### Array data
+
+Tương tự như `nested Object`, đôi khi data từ form phải được chuyển thành Array trước khi gửi data lên server.
+
+Cách nhóm data vào `Array` khá giống `nested object` ở 2 bước khai báo `type` và `defaultValues`.
+
+- Định nghĩa type cho các field cần group tương tự như các field khác
+- Thêm default value cho các values này (nếu cần thiết).
+- Tạo các element tương ứng để user có thể nhập liệu data, lưu ý tên của các field này cần phải đặt đúng format: `<field-name>.<index>`.
+
+Ví dụ: nhập 2 số điện thoại (primary và secondary phone number)
+
+```
+const form = useForm({
+  defaultValues: {
+    phoneNumbers: ["", ""]
+  }
+})
+
+...
+
+<input type="text" {...register("phoneNumbers.0")} />
+<input type="text" {...register("phoneNumbers.1")} />
+```
+
+#### Multiple Input
+
+Ở ví dụ trên, chúng ta thực hiện lưu trữ 2 số điện thoại vào 1 array để submit. Tuy nhiên, nó chỉ hoạt động tốt khi chúng ta biết chính xác được số lượng `phone number input`.
+
+Để dynamic số lượng phone number, sử dụng trong trường hợp user có quyền add thêm bao nhiêu số tuỳ thích. Ta phải sử dụng `dynamic input`.
+
+Để sử dụng dynamic field, ta thực hiện các bước sau:
+
+1. Import hook `useFieldArray` từ thư viện `react-hook-form`.
+2. Thêm một gía trị mới vào type FormValues để lưu trữ các phone number. Giá trị này ví dụ đặt tên là `phNumbers`, là một array chưa các phần tử là object, mỗi object có 1 key duy nhất là `number` có kiểu string
+
+```
+  phNumbers: {
+    number: string
+  }[]
+```
+
+3. Tạo giá trị mặc định của `phNumbers: [{ number: "" }]`. Một phần tử đại diện cho ban đầu có 1 số điện thoại để user nhập.
+4. Cần khai báo giá trị `phNumbers` là array gồm nhiều field khác nhau cho `react-hook-form` biết thông qua `useFieldArray`
+
+```
+const { ... control, ...} = form;
+
+const { fields } = useuseFieldArray({
+  name: 'phNumbers',
+  control
+})
+```
+
+Giá trị tuyền vào hook là một object, chứa các key như sau:
+
+- `name`: tên của field cần khai báo, ở đây là `phNumbers`
+- `control`: chính là data control được destructure từ `form`
+
+Giá trị trả về của hook là một object, với các key như sau:
+
+- `fields`: chưa data của các field được dynamic và lưu vào `phNumbers` như id (dùng để render jsx), value, error hoặc validation.
+
+5. Thêm jsx tương ứng với list `fields` ở trên. Lưu ý phần register, name của field trong array sẽ có cấu trúc như sau: `<data-name>.<index-in-list>.<data-key-name>`.
+
+Ở ví dụ trên sẽ là: `phNumbers.${index}.number`: với `index` là index tương ứng của từng field trong array `fields`.
+
+Để user thêm được phone number mới vào list, thêm button để handle, khi click button sẽ thực thi function `append` cũng được return về từ hook `useuseFieldArray`. Tham số của function này là một object `{ number: "" }`.
+
+Từ phone number thứ 2 trở đi, sẽ có nút `remove` để user xoá số đt. Tương tự như `append`, function `remove` được trả về trong hook `useuseFieldArray`. Tham số của function remove là index của field tương ứng.
+
+```
+const { fields, append, remove } = useuseFieldArray({
+  name: 'phNumbers',
+  control
+})
+
+<div>
+  {fields.map((field, index) => {
+    return (
+      <div>
+        <input key={field.id} type="text" {...register(`phNumbers.${index}.number`)}/>
+        {index > 0 && <button type="button" onClick={() => remvove(index)}>Remove</button>}
+      </div>
+    )
+  })}
+  <button type="button" onClick={() => append({number: ""})}>Add phone number</button>
+</div>
 ```
