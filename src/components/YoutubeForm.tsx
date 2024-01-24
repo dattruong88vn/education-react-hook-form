@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { get, useFieldArray, useForm } from "react-hook-form";
+import { useFieldArray, useForm, FieldErrors } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 let countRender = 0;
@@ -81,6 +81,10 @@ const YoutubeForm = () => {
     console.log(`submit form:`, { data });
   };
 
+  const onError = (errors: FieldErrors<FormValues>) => {
+    console.log({ errors });
+  };
+
   const handleGetValues = () => {
     const data = getValues();
     console.log("data from getValues function", data);
@@ -97,20 +101,23 @@ const YoutubeForm = () => {
   countRender++;
 
   // console.log({ formState });
-  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+  const {
+    errors,
+    // touchedFields, dirtyFields, isDirty
+  } = formState;
   // console.log({ errors });
 
   // const valueUserName = watch("username");
   // const valueUserNameEmail = watch(["username", "email"]);
   // console.log({ valueUserNameEmail });
 
-  console.log({ touchedFields, dirtyFields, isDirty });
+  // console.log({ touchedFields, dirtyFields, isDirty });
 
   return (
     <div>
       <h3>Number of render ({countRender / 2})</h3>
       {/* <h2>Watch username: {valueUserName}</h2> */}
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <form onSubmit={handleSubmit(onSubmit, onError)} noValidate>
         <div className="form-control">
           <label htmlFor={"username"}>Username</label>
           <input

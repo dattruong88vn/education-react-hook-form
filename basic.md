@@ -473,3 +473,25 @@ Bên cạnh đó, RHF cũng cung cấp một cách để disabled một field th
 ```
 
 - Lưu ý: khi một field được `disabled`, giá trị khi submit của nó mặc định là `undefined`, và field đó sẽ được bỏ qua phần validation.
+
+#### Handle Errors on Submission
+
+Khi submit form, chúng ta đang định nghĩa một funciton `onSubmit`, truyền function này vào function `handleSubmit` của RHF và gắn nó vào event submit của form.
+
+Câu hỏi đặt ra là tại sao chúng ta không call trực tiếp đến `onSubmit` mà phải thông qua `handleSubmit`. Câu trả lời là `handleSubmit` function còn nhận vào một tham số thứ 2 bên cạnh `onSubmit`, đó là `onError`.
+
+Function `onError` sẽ được thực thi khi submit form nhưng gặp lỗi, tham số nhận vào của `onError` chính là object chứa các lỗi của các field tương ứng.
+
+Sử dụng function `onError` giúp chúng ta tách rời logic cho phần xử lý lỗi khi submit form.
+
+Để sử dụng `onError` với typescript chúng ta cần import kiểu dữ liêụ `FieldErrors` từ RHF.
+
+```
+  const onError = (errors: FieldErrors<FormValues>) => {
+      console.log({ errors });
+  };
+
+  ...
+
+  <form onSubmit={handleSubmit(onSubmit, onError)}>
+```
