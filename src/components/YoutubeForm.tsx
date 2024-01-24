@@ -105,6 +105,10 @@ const YoutubeForm = () => {
     errors,
     // touchedFields, dirtyFields, isDirty
     isValid,
+    isSubmitting,
+    isSubmitted,
+    isSubmitSuccessful,
+    submitCount,
   } = formState;
   // console.log({ errors });
 
@@ -115,6 +119,10 @@ const YoutubeForm = () => {
   console.log({
     // touchedFields, dirtyFields, isDirty,
     isValid,
+    isSubmitting,
+    isSubmitted,
+    isSubmitSuccessful,
+    submitCount,
   });
 
   return (
@@ -279,7 +287,7 @@ const YoutubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
 
-        <button disabled={!isValid}>Submit</button>
+        <button disabled={!isValid || isSubmitting}>Submit</button>
         <button type="button" onClick={handleGetValues}>
           Get Values
         </button>

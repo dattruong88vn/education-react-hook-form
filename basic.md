@@ -510,3 +510,12 @@ const { isValid } = formState;
 <button disabled={!isValid}>Submit</button>
 
 ```
+
+#### Status of submission
+
+RHF cung cấp các thuộc tính hiển thị trạng thái của form khi submit. Bao gồm:
+
+- `isSubmitting`: mặc định `false`, chuyển sang `true` khi form được submit, và chuyển lại `false` khi function `onSubmit` hoặc `onError` được thực thi xong. Có thể dùng để `disabled` button submit khi user đã submit 1 lần trước đó.
+- `isSubmitted`: mặc định `false`, sau khi thực thi `onSubmit` hoặc `onError` sẽ chuyển thành `true`.
+- `isSubmitSuccessful`: mặc định false, chỉ chuyển sang true khi thực thi xong function `onSubmit`. Nếu submit có error runtime (như validation) sẽ giữ nguyên false.
+- `submitCount`: đếm số lần submit form thành công, bắt đầu từ 0.
