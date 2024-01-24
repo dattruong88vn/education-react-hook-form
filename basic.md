@@ -458,3 +458,18 @@ const handleSetValue = () => {
 - `touchedFields`: object chứa các key là các name-field, value là trạng thái `touched` của field đó `true | false`
 - `dirtyFields`: object chứa các key là các name-field, value là trạng thái `dirty` của field đó `true | false`
 - `isDirty`: boolean, cho biết form đã được thay đổi giá trị khác so với giá trị mặc định hay chưa (chỉ cần 1 field thay đổi --> true).
+
+#### Disable Field
+
+Để `disabled` input field, bạn có thể sử dụng thuộc tính disabled mặc định của thẻ input.
+
+Bên cạnh đó, RHF cũng cung cấp một cách để disabled một field thông qua function `register`. Thêm vào options object (tham số thứ 2 của register) thuộc tính `disabled`.
+
+```
+  {...register("field-name", {
+    disabled: true,
+    // ...
+  })}
+```
+
+- Lưu ý: khi một field được `disabled`, giá trị khi submit của nó mặc định là `undefined`, và field đó sẽ được bỏ qua phần validation.
