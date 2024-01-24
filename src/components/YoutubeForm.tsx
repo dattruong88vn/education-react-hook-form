@@ -57,12 +57,23 @@ const YoutubeForm = () => {
     watch,
     getValues,
     setValue,
+    reset,
   } = form;
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
     control,
   });
+
+  const {
+    errors,
+    // touchedFields, dirtyFields, isDirty
+    isValid,
+    isSubmitting,
+    isSubmitted,
+    isSubmitSuccessful,
+    submitCount,
+  } = formState;
 
   useEffect(() => {
     const data = watch((value) => {
@@ -76,6 +87,11 @@ const YoutubeForm = () => {
       data.unsubscribe();
     };
   }, [watch]);
+
+  useEffect(() => {
+    if (isSubmitSuccessful) reset();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSubmitSuccessful]);
 
   const onSubmit = (data: FormValues) => {
     console.log(`submit form:`, { data });
@@ -101,17 +117,7 @@ const YoutubeForm = () => {
   countRender++;
 
   // console.log({ formState });
-  const {
-    errors,
-    // touchedFields, dirtyFields, isDirty
-    isValid,
-    isSubmitting,
-    isSubmitted,
-    isSubmitSuccessful,
-    submitCount,
-  } = formState;
   // console.log({ errors });
-
   // const valueUserName = watch("username");
   // const valueUserNameEmail = watch(["username", "email"]);
   // console.log({ valueUserNameEmail });
@@ -288,6 +294,9 @@ const YoutubeForm = () => {
         </div>
 
         <button disabled={!isValid || isSubmitting}>Submit</button>
+        <button type="button" onClick={() => reset()}>
+          Reset Form
+        </button>
         <button type="button" onClick={handleGetValues}>
           Get Values
         </button>

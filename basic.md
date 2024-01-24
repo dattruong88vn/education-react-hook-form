@@ -519,3 +519,31 @@ RHF cung cấp các thuộc tính hiển thị trạng thái của form khi subm
 - `isSubmitted`: mặc định `false`, sau khi thực thi `onSubmit` hoặc `onError` sẽ chuyển thành `true`.
 - `isSubmitSuccessful`: mặc định false, chỉ chuyển sang true khi thực thi xong function `onSubmit`. Nếu submit có error runtime (như validation) sẽ giữ nguyên false.
 - `submitCount`: đếm số lần submit form thành công, bắt đầu từ 0.
+
+#### Reset form
+
+Sử dụng function `reset` từ object `form` để reset về các giá trị mặc định (trường hợp không nhận tham số). Lưu ý là reset về giá trị mặc định của form, không phải clear form.
+
+```
+const { reset } = form;
+
+<button onClick={() => reset()}>Reset form</button>
+```
+
+Function `reset` có thể được sử dụng khi submit form thành công.
+
+```
+useEffect(() => {
+  if (isSubmitSuccessful) reset();
+}, [isSubmitSuccessful]);
+```
+
+Function `reset` cho phép truyền vào tham số, đó là một object với các thuộc tính sau:
+
+- `values`: là object chứa key-value là field name và giá trị tương ứng sau khi reset.
+- `keepErrors`: boolean, giữ lại các lỗi trong form.
+- `keepDirty`: boolean, giữ lại state dirty của các field.
+- `keepDirtyValues`: boolean, giữ lại values của các dirty field là `true`. Các field có dirty state là `false` sẽ được reset data.
+- `keepValues`: boolean, giữ lại tất cả values
+
+Còn một số thuộc tính khác như: `keepDefaultValues`, `keepIsSubmitted`, `keepTouched`, `keepIsValid`, `keepSubmitCount`.
