@@ -343,3 +343,50 @@ Mặc định `react-hook-form` sẽ lưu các giá trị `number` hoặc `Date`
 <input type="number" {register('age', { required: {...}, valueAsNumber: true })}/>
 <input type="date" {register('dob', { required: {...}, valueAsDate: true })}/>
 ```
+
+#### Theo dõi thay đổi của giá trị trong form
+
+Trong thực tế, ngoài các tác vụ như validation, submit form thì có một số trường hợp cần preview data khi nhập form cũng như thực hiện các action side effect (như call api search, manipulate DOM).
+
+RHF cung cấp một function để thực hiện việc này `watch`, destructure từ object `form`
+
+1. Trường hợp sử dung form values để hiển thị ra UI
+
+Thực thi function `watch`, data trả về như sau:
+
+- `watch()`: ko có tham số, trả về object với tất cả data trong form, mỗi một key value là tên field và value tương ứng
+- `watch(<field-name>)`: tham số là 1 field name, data trả về là value của field đó.
+- `watch([<field-name-1, field-name-2>])`: tham số là array tên các field, data trả về là array các value tương ứng theo đúng thứ tự
+
+```
+const { watch } = form;
+
+const valueUsername = watch("username"); // string of user name
+const valueUsernameEmail = watch(["username", "email"]); // array [valueUsername, valueEmail]
+const valueAll = watch(); // object với data của tất cả các field
+```
+
+2. Trường hợp lắng nghe form values để thực thi side effect
+
+Trong hook `useEffect`, khai báo dependency là function `watch`, do vậy `useEffect` phải đặt bên dưới phần khai báo `form` và `watch`.
+
+Thực thi function `watch` bên trong useEffect.
+
+```
+useEffect(() => {
+  const subcription = watch((value) => {
+    // do something side effect
+    // value is a object that contains all data of form, similar valueAll object above
+  });
+
+  return () => {
+    // clear event when unmount
+    subcription.unsubcribe();
+  }
+
+}, [ watch ]);
+```
+
+- Tham số truyền vào là một callback fn, callback function này có tham số chính là object chưa data của form, chúng ta sẽ thực hiện các side effect bên trong callback fn này.
+
+- Gía trị trả về là một object có method unsubcribe, do `watch` được thực thi trong useEffect có nghĩa là nó đã subcribe một event lắng nghe data thay đổi trên form, do vậy khi unmount component chúng ta phải `unsubcribe` event này.

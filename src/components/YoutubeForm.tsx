@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
@@ -54,20 +55,39 @@ const YoutubeForm = () => {
   countRender++;
 
   // register a field
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
 
   // console.log({ formState });
   const { errors } = formState;
   // console.log({ errors });
+  useEffect(() => {
+    const data = watch((value) => {
+      console.log({ value });
+
+      // do something side effect
+      // fetch api search...
+    });
+    console.log({ data });
+    return () => {
+      // clear watch
+      data.unsubscribe();
+    };
+  }, [watch]);
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
     control,
   });
 
+  // const valueUserName = watch("username");
+
+  // const valueUserNameEmail = watch(["username", "email"]);
+  // console.log({ valueUserNameEmail });
+
   return (
     <div>
       <h3>Number of render ({countRender / 2})</h3>
+      {/* <h2>Watch username: {valueUserName}</h2> */}
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className="form-control">
           <label htmlFor={"username"}>Username</label>
