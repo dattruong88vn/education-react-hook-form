@@ -418,3 +418,25 @@ const handleGetValues = () => {
 <button type="button" onClick={handleGetValues}>Click</button>
 
 ```
+
+#### Set Value cho field
+
+RHF cung cấp một function cho phép thay đổi value của một field bất kỳ: `setValue`.
+
+Function `setValue` nhận vào 3 tham số:
+
+1. Field-name: tên của field cần update
+2. New-field-value: giá trị mới của field
+3. (Optional): là option object, chưa các key để update state của field đó như `shouldValidate`, `shouldDirty` và `shouldTouch`.
+
+```
+const { setValue } = form;
+
+const handleSetValue = () => {
+  setValue("username", "", {
+    shouldValidate: false,
+    shouldDirty: true,
+    shouldTouch: true
+  })
+}
+```

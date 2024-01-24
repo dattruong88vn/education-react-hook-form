@@ -49,7 +49,15 @@ const YoutubeForm = () => {
   });
 
   // register a field
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
 
   const { fields, append, remove } = useFieldArray({
     name: "phNumbers",
@@ -76,6 +84,14 @@ const YoutubeForm = () => {
   const handleGetValues = () => {
     const data = getValues();
     console.log("data from getValues function", data);
+  };
+
+  const handleSetValue = () => {
+    setValue("username", "", {
+      shouldDirty: true,
+      shouldTouch: true,
+      shouldValidate: true,
+    });
   };
 
   countRender++;
@@ -250,6 +266,9 @@ const YoutubeForm = () => {
         <button>Submit</button>
         <button type="button" onClick={handleGetValues}>
           Get Values
+        </button>
+        <button type="button" onClick={handleSetValue}>
+          Set Value
         </button>
       </form>
 
