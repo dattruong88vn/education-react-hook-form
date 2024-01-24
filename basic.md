@@ -348,7 +348,9 @@ Mặc định `react-hook-form` sẽ lưu các giá trị `number` hoặc `Date`
 
 Trong thực tế, ngoài các tác vụ như validation, submit form thì có một số trường hợp cần preview data khi nhập form cũng như thực hiện các action side effect (như call api search, manipulate DOM).
 
-RHF cung cấp một function để thực hiện việc này `watch`, destructure từ object `form`
+RHF cung cấp một function để thực hiện việc này `watch`, destructure từ object `form`.
+
+Function `watch` sẽ trigger re-render UI nếu nó được call bên trong component, hoặc subscribe sự thay đổi values của form.
 
 1. Trường hợp sử dung form values để hiển thị ra UI
 
@@ -389,4 +391,30 @@ useEffect(() => {
 
 - Tham số truyền vào là một callback fn, callback function này có tham số chính là object chưa data của form, chúng ta sẽ thực hiện các side effect bên trong callback fn này.
 
-- Gía trị trả về là một object có method unsubcribe, do `watch` được thực thi trong useEffect có nghĩa là nó đã subcribe một event lắng nghe data thay đổi trên form, do vậy khi unmount component chúng ta phải `unsubcribe` event này.
+- Gía trị trả về là một object có method unsubcribe, do `watch` được thực thi trong useEffect có nghĩa là nó đã subcribe một sự thay đổi data trên form, do vậy khi unmount component chúng ta phải `unsubcribe`.
+
+#### Get Form Values
+
+RHF cung cấp một function để lấy ra các value của form, `getValues`, cũng destructure từ `form`.
+
+Function `getValues` có cú pháp hoàn toàn giống với `watch` trong trường hợp hiển thị ra UI.
+
+- `getValues()`: ko có tham số, trả về object với tất cả data trong form, mỗi một key value là tên field và value tương ứng
+- `getValues(<field-name>)`: tham số là 1 field name, data trả về là value của field đó.
+- `getValues([<field-name-1, field-name-2>])`: tham số là array tên các field, data trả về là array các value tương ứng theo đúng thứ tự
+
+Điểm khác nhau giữa `getValues` so với `watch`, là nó không trigger re-renders component hay subscribe sự thay đổi values, nên nó sẽ không thực thi khi thay đổi values.
+
+Do vậy, function `getValues` thường được sử dụng khi user trigger một event nào đó như click button.
+
+```
+const { getValues } = form;
+
+const handleGetValues = () => {
+  const data = getValues();
+  // do something
+}
+
+<button type="button" onClick={handleGetValues}>Click</button>
+
+```

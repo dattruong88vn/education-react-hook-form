@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
+import { get, useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 let countRender = 0;
@@ -48,18 +48,14 @@ const YoutubeForm = () => {
     // },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(`submit form:`, { data });
-  };
-
-  countRender++;
-
   // register a field
-  const { register, control, handleSubmit, formState, watch } = form;
+  const { register, control, handleSubmit, formState, watch, getValues } = form;
 
-  // console.log({ formState });
-  const { errors } = formState;
-  // console.log({ errors });
+  const { fields, append, remove } = useFieldArray({
+    name: "phNumbers",
+    control,
+  });
+
   useEffect(() => {
     const data = watch((value) => {
       console.log({ value });
@@ -67,20 +63,28 @@ const YoutubeForm = () => {
       // do something side effect
       // fetch api search...
     });
-    console.log({ data });
     return () => {
       // clear watch
       data.unsubscribe();
     };
   }, [watch]);
 
-  const { fields, append, remove } = useFieldArray({
-    name: "phNumbers",
-    control,
-  });
+  const onSubmit = (data: FormValues) => {
+    console.log(`submit form:`, { data });
+  };
+
+  const handleGetValues = () => {
+    const data = getValues();
+    console.log("data from getValues function", data);
+  };
+
+  countRender++;
+
+  // console.log({ formState });
+  const { errors } = formState;
+  // console.log({ errors });
 
   // const valueUserName = watch("username");
-
   // const valueUserNameEmail = watch(["username", "email"]);
   // console.log({ valueUserNameEmail });
 
@@ -244,6 +248,9 @@ const YoutubeForm = () => {
         </div>
 
         <button>Submit</button>
+        <button type="button" onClick={handleGetValues}>
+          Get Values
+        </button>
       </form>
 
       <DevTool control={control} />
