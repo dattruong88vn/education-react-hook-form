@@ -97,12 +97,14 @@ const YoutubeForm = () => {
   countRender++;
 
   // console.log({ formState });
-  const { errors } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty } = formState;
   // console.log({ errors });
 
   // const valueUserName = watch("username");
   // const valueUserNameEmail = watch(["username", "email"]);
   // console.log({ valueUserNameEmail });
+
+  console.log({ touchedFields, dirtyFields, isDirty });
 
   return (
     <div>

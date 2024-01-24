@@ -440,3 +440,21 @@ const handleSetValue = () => {
   })
 }
 ```
+
+#### State: Dirty và Touch
+
+1. Touched
+
+- `false`: mặc định
+- `true`: khi user đã có tương tác với field, cụ thể là focus và sau đó blur.
+
+2. Dirty
+
+- `false`: mặc định hoặc khi user thay đổi giá trị, và giá trị mới giống với gía trị mặc định
+- `true`: khi user thay đổi giá trị của field, giá trị mới khác với giá trị mặc định
+
+3. RHF cung cấp một số thuộc tính để access vào state của form và state của field. Destructure `formState` từ form, tiếp tục destructure từ `formState` các thuộc tính:
+
+- `touchedFields`: object chứa các key là các name-field, value là trạng thái `touched` của field đó `true | false`
+- `dirtyFields`: object chứa các key là các name-field, value là trạng thái `dirty` của field đó `true | false`
+- `isDirty`: boolean, cho biết form đã được thay đổi giá trị khác so với giá trị mặc định hay chưa (chỉ cần 1 field thay đổi --> true).
