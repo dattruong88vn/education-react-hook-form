@@ -495,3 +495,18 @@ Sử dụng function `onError` giúp chúng ta tách rời logic cho phần xử
 
   <form onSubmit={handleSubmit(onSubmit, onError)}>
 ```
+
+#### Disabled Submission
+
+Nhiều trường hợp chúng ta cần disabled button submit khi user chưa nhập thông tin hay thông tin chưa valid.
+
+Để thực hiện điều này chúng ta chỉ cần thêm thuộc tính `disabled` vào button submit.
+
+Ngoài ra, để check xem form đã valid hết tất cả các field hay chưa, chúng ta sử dụng thuộc tính `isValid` từ object `formState`
+
+```
+const { isValid } = formState;
+
+<button disabled={!isValid}>Submit</button>
+
+```
