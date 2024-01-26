@@ -1,6 +1,6 @@
 import { useForm, FieldErrors } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
 
 type FormType = {
   username: string;
@@ -8,20 +8,20 @@ type FormType = {
   channel: string;
 };
 
-const schema = yup.object({
-  username: yup.string().required("Username is required"),
-  email: yup.string().email("Email is invalid").required("Email is required"),
-  channel: yup.string().required("Channel is required"),
+const schema = z.object({
+  username: z.string().nonempty("Username is required"),
+  email: z.string().email("Email is invalid").nonempty("Email is required"),
+  channel: z.string().nonempty("Channel is required"),
 });
 
-export const YupForm = () => {
+export const ZodForm = () => {
   const form = useForm<FormType>({
     defaultValues: {
       username: "",
       email: "",
       channel: "",
     },
-    resolver: yupResolver(schema),
+    resolver: zodResolver(schema),
   });
 
   const { register, formState, handleSubmit } = form;
@@ -37,7 +37,7 @@ export const YupForm = () => {
 
   return (
     <div>
-      <h2>Yup Library</h2>
+      <h2>Zod Library</h2>
       <form onSubmit={handleSubmit(onSubmit, onError)}>
         <div className="form-control">
           <label htmlFor={"username"}>Username</label>

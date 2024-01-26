@@ -64,3 +64,46 @@ const form = useForm({
   resolver: yupResover(schema)
 })
 ```
+
+#### Zod Library
+
+###### Giới thiệu
+
+`Zod` là một thư viện giúp chúng ta tạo ra schema validation. Nó có chức năng tương tự `Yup`, khác nhau cơ bản về các method.
+
+```
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zop";
+
+const schema = zod.object({
+  ...
+  email: z.string().email("Email is invalid").noempty("Email is required")
+})
+
+const form = useForm({
+  defaultValues: { ... },
+  resolver: zodResover(schema)
+})
+
+...
+
+<input
+  type="email"
+  {...register("email")}
+/>
+```
+
+###### Thư viện `@hookform/resolvers` để connect `react-hook-form` và `zod`
+
+Để sử dụng `zod` với RHF chúng ta cũng cần cài thêm thư viện `@hookform/resolvers`
+
+Sau đó import vào component: `import { zodResolver } from "@hookform/resolvers/zod";`
+
+Khai báo vào resolver của RHF:
+
+```
+const form = useForm({
+  defaultValues: { ... },
+  resolver: zodResover(schema)
+})
+```
