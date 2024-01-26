@@ -590,3 +590,13 @@ Cách cấu hình, trong object truyền vào `useForm` hook, thêm thuộc tín
 - `onChange`: trigger sau khi user change value.
 - `onTouched`: trigger sau khi user blur, sau đó validate khi user change value.
 - `all`: validate cả khi user blur và change.
+
+#### Manual Trigger Validation
+
+`react-hook-form` cung cấp một tính năng cho user manual validation form, đó là function `trigger`, destructure từ form.
+
+Function `trigger` có thể có tham số hoặc ko có tham số truyền vào:
+
+- `trigger()`: validation tất cả các field.
+- `trigger("<field-name>")`: validation field.
+- `trigger(["<field-name>"])`: validation nhiều field.

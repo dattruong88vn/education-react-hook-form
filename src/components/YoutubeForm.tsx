@@ -59,6 +59,7 @@ const YoutubeForm = () => {
     getValues,
     setValue,
     reset,
+    trigger,
   } = form;
 
   const { fields, append, remove } = useFieldArray({
@@ -311,6 +312,9 @@ const YoutubeForm = () => {
         </button>
         <button type="button" onClick={handleSetValue}>
           Set Value
+        </button>
+        <button type="button" onClick={() => trigger("channel")}>
+          Validate
         </button>
       </form>
 
