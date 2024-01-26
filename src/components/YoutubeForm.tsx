@@ -34,6 +34,7 @@ const YoutubeForm = () => {
       age: 0,
       dob: new Date(),
     },
+    mode: "onSubmit",
     // function
     // defaultValues: async () => {
     //   const response = await fetch(

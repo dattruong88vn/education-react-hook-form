@@ -554,7 +554,7 @@ Một số trường hợp, data user nhập vào phải được kiểm tra th�
 
 Ví dụ, form chứa email hoặc số điện thoại, trước khi submit form chúng ta cần kiểm tra số điện thoại hoặc email đó đã tồn tại chưa. Nếu đã tồn tại sẽ hiện thông báo lỗi.
 
-Các bài trước khi học về `validation`, chúng ta đã biết rằng nó có thể là một object với mỗi key là một function tương ứng với một rule để validate. Để validate sau khi call 1 api (bất đồng bộ), chúng ta thêm async vào trước function này và thực hiện call api bên trong đó
+Các bài trước khi học về `validation`, chúng ta đã biết rằng nó có thể là một object với mỗi key là một function tương ứng với một rule để validate. Để validate sau khi call 1 api (bất đồng bộ), chúng ta thêm `async` vào trước function này và thực hiện call api bên trong đó
 
 ```
 validate: {
@@ -576,3 +576,17 @@ validate: {
   }
 },
 ```
+
+#### Validation Mode
+
+Trong các ví dụ đã làm, hành động `validation` chỉ được thực hiện khi user click vào submit button.
+
+Đây là behavior mặc định của `react-hook-form`, chúng ta có thể config `validation` khi `onChange`, `onBlur` tuỳ theo yêu cầu của project.
+
+Cách cấu hình, trong object truyền vào `useForm` hook, thêm thuộc tính `mode` với value là một string với các giá trị như sau:
+
+- `onSubmit`: mặc định, validation khi submit form.
+- `onBlur`: trigger khi user blur khỏi một field.
+- `onChange`: trigger sau khi user change value.
+- `onTouched`: trigger sau khi user blur, sau đó validate khi user change value.
+- `all`: validate cả khi user blur và change.
