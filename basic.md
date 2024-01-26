@@ -547,3 +547,32 @@ Function `reset` cho phép truyền vào tham số, đó là một object với 
 - `keepValues`: boolean, giữ lại tất cả values
 
 Còn một số thuộc tính khác như: `keepDefaultValues`, `keepIsSubmitted`, `keepTouched`, `keepIsValid`, `keepSubmitCount`.
+
+#### Validation Async
+
+Một số trường hợp, data user nhập vào phải được kiểm tra thông qua 1 API khác để đảm bảo các yêu cầu nghiệp vụ.
+
+Ví dụ, form chứa email hoặc số điện thoại, trước khi submit form chúng ta cần kiểm tra số điện thoại hoặc email đó đã tồn tại chưa. Nếu đã tồn tại sẽ hiện thông báo lỗi.
+
+Các bài trước khi học về `validation`, chúng ta đã biết rằng nó có thể là một object với mỗi key là một function tương ứng với một rule để validate. Để validate sau khi call 1 api (bất đồng bộ), chúng ta thêm async vào trước function này và thực hiện call api bên trong đó
+
+```
+validate: {
+  notAdmin: (fieldValue) => {
+    return (
+      fieldValue !== "admin@example.com" || "Enter another email"
+    );
+  },
+  notBlackList: (fieldValue) => {
+    return (
+      !fieldValue.endsWith("baddomain.com") ||
+      "This domain is not support"
+    );
+  },
+  emailAvailable: async (fieldValue) => {
+    const response = await fetch("/some-url");
+    const data = await response.json();
+    return data.length === 0 || "Email already exists"
+  }
+},
+```

@@ -67,7 +67,8 @@ const YoutubeForm = () => {
 
   const {
     errors,
-    // touchedFields, dirtyFields, isDirty
+    // touchedFields, dirtyFields,
+    isDirty,
     isValid,
     isSubmitting,
     isSubmitted,
@@ -171,6 +172,13 @@ const YoutubeForm = () => {
                     !fieldValue.endsWith("baddomain.com") ||
                     "This domain is not support"
                   );
+                },
+                emailAvailable: async (fieldValue) => {
+                  const response = await fetch(
+                    `https://jsonplaceholder.typicode.com/users?email=${fieldValue}`
+                  );
+                  const data = await response.json();
+                  return data.length === 0 || "Email already exists";
                 },
               },
             })}
@@ -293,7 +301,7 @@ const YoutubeForm = () => {
           <p className="error">{errors.dob?.message}</p>
         </div>
 
-        <button disabled={!isValid || isSubmitting}>Submit</button>
+        <button disabled={!isDirty || isSubmitting}>Submit</button>
         <button type="button" onClick={() => reset()}>
           Reset Form
         </button>
